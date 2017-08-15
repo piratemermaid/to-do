@@ -1,10 +1,11 @@
 var DOMstrings = {
   todoEntry: '.enter-todo',
   todoCount: '.todo-count',
-  itemCheck: '.item-check'
+  check: '.item-check',
+  del: '.item-remove'
 };
 
-var itemList = ['one', 'two'];
+var itemList = ['one', 'two', 'three', 'four', 'five'];
 
 document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', function(e) {
   var newItem;
@@ -18,8 +19,7 @@ document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', functi
   }
 })
 
-
-$(document).on('click', DOMstrings.itemCheck, function() {
+$(document).on('click', DOMstrings.check, function() {
   var parent = this.parentNode;
   $(parent.querySelector('.item-text')).toggleClass('checked');
   if (this.innerHTML === '') {
@@ -28,9 +28,20 @@ $(document).on('click', DOMstrings.itemCheck, function() {
   else {
     this.innerHTML = '';
   }
-  console.log(parent);
 })
 
+$(document).on('click', DOMstrings.del, function() {
+  var parent = this.parentNode;
+  var index = itemList.indexOf(parent.querySelector('.item-text').textContent);
+  itemList.splice(index, 1);
+  console.log(itemList);
+  for(i = 0; i < itemList.length; i++) {
+    console.log(i);
+    console.log(itemList[i]);
+    $('#item-' + i).children('.item-text').text(itemList[i]);
+  }
+  $('#item-' + itemList.length).remove();
+})
 
 
 
