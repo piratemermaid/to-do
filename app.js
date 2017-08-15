@@ -1,9 +1,10 @@
 var DOMstrings = {
   todoEntry: '.enter-todo',
-  todoCount: '.todo-count'
+  todoCount: '.todo-count',
+  itemCheck: '.item-check'
 };
 
-var itemList = [];
+var itemList = ['one', 'two'];
 
 document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', function(e) {
   var newItem;
@@ -11,17 +12,35 @@ document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', functi
   if (e.keyCode === 13 || e.which === 13) {
     newItem = document.querySelector(DOMstrings.todoEntry).value;
     if (newItem !== '') {
-      ctrlAddItem(newItem);
+      addItem(newItem);
       updateCount();
     }
   }
 })
 
-var ctrlAddItem = function(item) {
+
+$(document).on('click', DOMstrings.itemCheck, function() {
+  var parent = this.parentNode;
+  $(parent.querySelector('.item-text')).toggleClass('checked');
+  if (this.innerHTML === '') {
+    this.innerHTML = '<img src="check.png" />';
+  }
+  else {
+    this.innerHTML = '';
+  }
+  console.log(parent);
+})
+
+
+
+
+
+
+var addItem = function(item) {
   var index;
   itemList.push(item);
   index = itemList.length - 1;
-  html = '<div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><br/>';
+  html = '<div id="item-' + index + '"><div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><br/>';
   document.querySelector('.main').insertAdjacentHTML('beforeend', html);
   document.querySelector(DOMstrings.todoEntry).value = '';
 }
@@ -44,6 +63,10 @@ var updateCount = function() {
   }
 }
 
+
+
+
+
 var show = function(str) {
   document.querySelector(str).style.visiblity = "visible";
 }
@@ -51,3 +74,4 @@ var show = function(str) {
 var hide = function(str) {
   document.querySelector(str).style.visibility = "hidden";
 }
+

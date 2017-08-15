@@ -112,3 +112,18 @@ footer {
 .todo-count {
   float: right;
 }
+
+
+
+
+
+.checked {
+  text-decoration: line-through;
+  font-style: italic;
+}
+
+img {
+  width: 12px;
+  height: 12px;
+  padding-bottom: 6px;
+}
