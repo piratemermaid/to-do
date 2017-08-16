@@ -7,7 +7,7 @@ Done:
 -Delete todos
 -Mark all as completed
 -Update todo count
+-Filter All/Active/Completed
 
 To do:
 -Edit todos
--Filter All/Active/Completed

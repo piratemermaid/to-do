@@ -8,6 +8,8 @@ var DOMstrings = {
 var itemList = [ {id: 0, text: 'one', complete: false}, {id: 1, text:'two', complete: false}, {id: 2, text: 'three', complete: false}, {id: 3, text: 'four', complete: false}, {id: 4, text: 'five', complete: false}];
 var listIndex = 5;
 
+
+
 document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', function(e) {
   var newItem;
 
@@ -19,6 +21,8 @@ document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', functi
     }
   }
 })
+
+
 
 $(document).on('click', DOMstrings.check, function() {
   var parent, index, arrIndex, numComplete;
@@ -112,6 +116,8 @@ $(document).on('click', '#all-check', function() {
   updateCount();
 })
 
+
+
 document.getElementById('clear-check').addEventListener('click', function() {
   for(i = itemList.length - 1; i > -1; i--) {
     if(itemList[i].complete === true) {
@@ -155,6 +161,9 @@ var updateCount = function() {
     show(DOMstrings.todoCount);
     document.querySelector(DOMstrings.todoCount).textContent = '1 item left to do';
   }
+  else if(count === 0) {
+    document.querySelector(DOMstrings.todoCount).textContent = 'Nothing to do';
+  }
   else {
     show(DOMstrings.todoCount);
     document.querySelector(DOMstrings.todoCount).textContent = count + ' items left to do';
@@ -176,3 +185,68 @@ var hide = function(str) {
   document.querySelector(str).style.visibility = "hidden";
 }
 
+
+
+
+
+
+
+
+
+
+$('li').click(function() {
+  if(!($(this).hasClass('selected'))) {
+    $('.filters').children().removeClass('selected');
+    $(this).toggleClass('selected');
+  }
+
+  document.querySelector('.main').innerHTML = '';
+
+  if($(this).text() === 'All') {
+    displayAll();
+  }
+  else if($(this).text() === 'Active') {
+    displayActive();
+  }
+  else if($(this).text() === 'Completed') {
+    displayCompleted();
+  }
+})
+
+
+
+
+displayAll = function() {
+  var index;
+  for(i = 0; i < itemList.length; i++) {
+    displayItem(itemList[i].id, itemList[i].text, itemList[i].complete);
+  }
+}
+
+displayActive = function() {
+  var index;
+  for(i = 0; i < itemList.length; i++) {
+    if(itemList[i].complete === false) {
+      displayItem(itemList[i].id, itemList[i].text, itemList[i].complete);
+    }
+  }
+}
+
+displayCompleted = function() {
+  var index;
+  for(i = 0; i < itemList.length; i++) {
+    if(itemList[i].complete === true) {
+      displayItem(itemList[i].id, itemList[i].text, itemList[i].complete);
+    }
+  }
+}
+
+displayItem = function(index, item, complete) {
+  if(complete === false) {
+    html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><br/>';
+  }
+  else {
+    html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + item + '</div><div class="item-remove">X</div><br/>';
+  }
+  document.querySelector('.main').insertAdjacentHTML('beforeend', html);
+}

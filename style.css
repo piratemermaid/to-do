@@ -108,9 +108,18 @@ footer {
   display: inline;
 }
 
-.filters li a {
+.filters li {
   text-decoration: none;
   padding: 0 10px 0 10px;
+}
+
+.filters li:hover {
+  text-decoration: underline;
+}
+
+.filters .selected {
+  border: 1px solid #946E94;
+  border-radius: 5px;
 }
 
 .todo-count {
