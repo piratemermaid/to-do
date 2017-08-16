@@ -50,7 +50,10 @@ $(document).on('click', DOMstrings.check, function() {
       document.querySelector('.mark-all').textContent = 'Unmark all as complete';
     }
   }
+  updateCount();
 })
+
+
 
 $(document).on('click', DOMstrings.del, function() {
   var parent, index;
@@ -61,13 +64,26 @@ $(document).on('click', DOMstrings.del, function() {
       itemList.splice(i, 1);
     }
   }
+  updateCount();
 })
+
+
+
 
 $(document).on('mouseenter', '.item', function() {
   // var parent = this.parentNode;
   ($(this).find('.item-remove')).css('visibility', 'visible');
   $(this).css('background', '#E1C8E1');
 })
+
+$(document).on('mouseleave', '.item', function() {
+  var parent = this.parentNode;
+  ($(this).find('.item-remove')).css('visibility', 'hidden');
+  $(this).css('background', 'none');
+})
+
+
+
 
 $(document).on('click', '#all-check', function() {
   this.style.background = '#C4A3C4';
@@ -93,6 +109,7 @@ $(document).on('click', '#all-check', function() {
     document.querySelector('.mark-all').textContent = 'Mark all as complete';
     this.style.background = 'none';
   }
+  updateCount();
 })
 
 document.getElementById('clear-check').addEventListener('click', function() {
@@ -104,13 +121,9 @@ document.getElementById('clear-check').addEventListener('click', function() {
   }
   document.querySelector('.mark-all').textContent = 'Mark all as complete';
   document.getElementById('all-check').style.background = 'none';
+  updateCount();
 })
 
-$(document).on('mouseleave', '.item', function() {
-  var parent = this.parentNode;
-  ($(this).find('.item-remove')).css('visibility', 'hidden');
-  $(this).css('background', 'none');
-})
 
 
 
@@ -130,21 +143,25 @@ var addItem = function(item) {
 }
 
 var updateCount = function() {
-  var count;
+  var count = 0;
 
-  count = itemList.length;
+  for(i = 0; i < itemList.length; i++) {
+    if(itemList[i].complete === false) {
+      count++;
+    }
+  }
 
   if(count === 1) {
     show(DOMstrings.todoCount);
     document.querySelector(DOMstrings.todoCount).textContent = '1 item left to do';
   }
-  else if(count > 1) {
+  else {
     show(DOMstrings.todoCount);
     document.querySelector(DOMstrings.todoCount).textContent = count + ' items left to do';
   }
-  else {
-    hide(DOMstrings.todoCount);
-  }
+  // else {
+  //   hide(DOMstrings.todoCount);
+  // }
 }
 
 
