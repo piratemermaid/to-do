@@ -5,7 +5,8 @@ var DOMstrings = {
   del: '.item-remove'
 };
 
-var itemList = ['one', 'two', 'three', 'four', 'five'];
+var itemList = [ {id: 0, text: 'one'}, {id: 1, text:'two'}, {id: 2, text: 'three'}, {id: 3, text: 'four'}, {id: 4, text: 'five'}];
+var listIndex = 5;
 
 document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', function(e) {
   var newItem;
@@ -31,27 +32,41 @@ $(document).on('click', DOMstrings.check, function() {
 })
 
 $(document).on('click', DOMstrings.del, function() {
-  var parent = this.parentNode;
-  var index = itemList.indexOf(parent.querySelector('.item-text').textContent);
-  itemList.splice(index, 1);
-  console.log(itemList);
+  var parent, index;
+  index = $(this).parent().attr('data-element');
+  $('#item-' + index).remove();
   for(i = 0; i < itemList.length; i++) {
-    console.log(i);
-    console.log(itemList[i]);
-    $('#item-' + i).children('.item-text').text(itemList[i]);
+    if(itemList[i].id = index) {
+      itemList.splice(i, 1);
+    }
   }
-  $('#item-' + itemList.length).remove();
+})
+
+$(document).on('mouseenter', '.item', function() {
+  var parent = this.parentNode;
+  ($(this).find('.item-remove')).css('visibility', 'visible');
+  $(this).css('background', '#E1C8E1');
+})
+
+$(document).on('mouseleave', '.item', function() {
+  var parent = this.parentNode;
+  ($(this).find('.item-remove')).css('visibility', 'hidden');
+  $(this).css('background', 'none');
 })
 
 
 
 
 
+
+
 var addItem = function(item) {
-  var index;
-  itemList.push(item);
-  index = itemList.length - 1;
-  html = '<div id="item-' + index + '"><div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><br/>';
+  var index, newObj;
+  index = listIndex;
+  newObj = { id: index, text: item };
+  itemList.push(newObj);
+  listIndex++;
+  html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><br/>';
   document.querySelector('.main').insertAdjacentHTML('beforeend', html);
   document.querySelector(DOMstrings.todoEntry).value = '';
 }

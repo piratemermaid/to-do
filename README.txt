@@ -1,4 +1,4 @@
-A to do app created with vanilla Javascript.
+A to do app with Javascript and jQuery.
 
 Done:
 -Add new todos

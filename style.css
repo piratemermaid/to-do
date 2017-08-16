@@ -34,8 +34,11 @@ h1 {
     box-shadow: 0 0 10px #D8A6D8;
 }
 
+
+
+
 .item {
-  padding: 10px;
+  padding: 5px;
 }
 
 .item-text {
@@ -55,6 +58,7 @@ h1 {
 
 .item-remove {
   float: right;
+  visibility: hidden;
 }
 
 
@@ -127,3 +131,8 @@ img {
   height: 12px;
   padding-bottom: 6px;
 }
+
+
+
+
+
