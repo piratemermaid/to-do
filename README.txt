@@ -5,9 +5,9 @@ Done:
 -Update todo count
 -Check off todos
 -Delete todos
+-Mark all as completed
 
 To do:
 -Edit todos
--Mark all as completed
 -Clear completed
 -Filter All/Active/Completed

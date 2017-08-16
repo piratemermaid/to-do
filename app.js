@@ -5,7 +5,7 @@ var DOMstrings = {
   del: '.item-remove'
 };
 
-var itemList = [ {id: 0, text: 'one'}, {id: 1, text:'two'}, {id: 2, text: 'three'}, {id: 3, text: 'four'}, {id: 4, text: 'five'}];
+var itemList = [ {id: 0, text: 'one', complete: false}, {id: 1, text:'two', complete: false}, {id: 2, text: 'three', complete: false}, {id: 3, text: 'four', complete: false}, {id: 4, text: 'five', complete: false}];
 var listIndex = 5;
 
 document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', function(e) {
@@ -21,13 +21,17 @@ document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', functi
 })
 
 $(document).on('click', DOMstrings.check, function() {
-  var parent = this.parentNode;
+  var parent, index;
+  index = $(this).parent().attr('data-element');
+  parent = this.parentNode;
   $(parent.querySelector('.item-text')).toggleClass('checked');
   if (this.innerHTML === '') {
     this.innerHTML = '<img src="check.png" />';
+    itemList[index].complete = true;
   }
   else {
     this.innerHTML = '';
+    itemList[index].complete = false;
   }
 })
 
@@ -43,9 +47,48 @@ $(document).on('click', DOMstrings.del, function() {
 })
 
 $(document).on('mouseenter', '.item', function() {
-  var parent = this.parentNode;
+  // var parent = this.parentNode;
   ($(this).find('.item-remove')).css('visibility', 'visible');
   $(this).css('background', '#E1C8E1');
+})
+
+// $(document).on('dblclick', '.item', function() {
+//   console.log('double click');
+//   var parent = this.parentNode;
+//   ($(this).find('.item-text')).textContent = 'ok';
+//   ($(this).find('.item-text')).focus();
+//   // ($(this).find('.item-text')).contentEditable=true;
+//   // this.find('.item-text').contentEditable=true;
+// })
+
+document.getElementById('all-check').addEventListener('click', function() {
+  this.style.background = '#C4A3C4';
+  var index, numComplete;
+  numComplete = 0;
+  for(i = 0; i < itemList.length; i++) {
+    if(itemList[i].complete === false) {
+      itemList[i].complete = true;
+      index = itemList[i].id;
+      document.querySelector('#item-' + index).innerHTML = '<div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove" class="hidden">X</div><br/>';
+    }
+    else {
+      numComplete++;
+    }
+    document.querySelector('.mark-all').textContent = 'Unmark all as complete';
+  }
+  if(numComplete === itemList.length) {
+    for(i = 0; i < itemList.length; i++) {
+      itemList[i].complete = false;
+      index = itemList[i].id;
+      document.querySelector('#item-' + index).innerHTML = '<div class="item-check"></div><div class="item-text">' + itemList[i].text + '</div><div class="item-remove" class="hidden">X</div><br/>';
+    }
+    document.querySelector('.mark-all').textContent = 'Mark all as complete';
+    this.style.background = 'none';
+  }
+})
+
+document.getElementById('clear-check').addEventListener('click', function() {
+  console.log('clear completed');
 })
 
 $(document).on('mouseleave', '.item', function() {

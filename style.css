@@ -71,7 +71,7 @@ footer {
   padding: 10px;
 }
 
-.all-check {
+#all-check {
   height: 10px;
   width: 10px;
   border: 1px solid black;
@@ -85,7 +85,7 @@ footer {
   padding-left: 10px;
 }
 
-.clear-check {
+#clear-check {
   height: 10px;
   width: 10px;
   border: 1px solid black;
