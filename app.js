@@ -21,7 +21,7 @@ document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', functi
 })
 
 $(document).on('click', DOMstrings.check, function() {
-  var parent, index;
+  var parent, index, numComplete;
   index = $(this).parent().attr('data-element');
   parent = this.parentNode;
   $(parent.querySelector('.item-text')).toggleClass('checked');
@@ -32,6 +32,16 @@ $(document).on('click', DOMstrings.check, function() {
   else {
     this.innerHTML = '';
     itemList[index].complete = false;
+  }
+
+  numComplete = 0;
+  for (i = 0; i < itemList.length; i++) {
+    if(itemList[i].complete === true) {
+      numComplete++;
+    }
+  }
+  if (numComplete === itemList.length) {
+    document.querySelector('.mark-all').textContent = 'Unmark all as complete';
   }
 })
 
