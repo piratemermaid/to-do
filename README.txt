@@ -8,6 +8,6 @@ Done:
 -Mark all as completed
 
 To do:
+-Update todo count
 -Edit todos
--Clear completed
 -Filter All/Active/Completed

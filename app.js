@@ -21,27 +21,34 @@ document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', functi
 })
 
 $(document).on('click', DOMstrings.check, function() {
-  var parent, index, numComplete;
+  var parent, index, arrIndex, numComplete;
   index = $(this).parent().attr('data-element');
+  for (i = 0; i < itemList.length; i++) {
+    if(parseInt(itemList[i].id) === parseInt(index)) {
+      arrIndex = i;
+    }
+  }
   parent = this.parentNode;
   $(parent.querySelector('.item-text')).toggleClass('checked');
   if (this.innerHTML === '') {
     this.innerHTML = '<img src="check.png" />';
-    itemList[index].complete = true;
+    itemList[arrIndex].complete = true;
   }
   else {
     this.innerHTML = '';
-    itemList[index].complete = false;
+    itemList[arrIndex].complete = false;
   }
 
-  numComplete = 0;
-  for (i = 0; i < itemList.length; i++) {
-    if(itemList[i].complete === true) {
-      numComplete++;
+  if(itemList.length > 0) {
+    numComplete = 0;
+    for (i = 0; i < itemList.length; i++) {
+      if(itemList[i].complete === true) {
+        numComplete++;
+      }
     }
-  }
-  if (numComplete === itemList.length) {
-    document.querySelector('.mark-all').textContent = 'Unmark all as complete';
+    if (numComplete === itemList.length) {
+      document.querySelector('.mark-all').textContent = 'Unmark all as complete';
+    }
   }
 })
 
@@ -62,16 +69,7 @@ $(document).on('mouseenter', '.item', function() {
   $(this).css('background', '#E1C8E1');
 })
 
-// $(document).on('dblclick', '.item', function() {
-//   console.log('double click');
-//   var parent = this.parentNode;
-//   ($(this).find('.item-text')).textContent = 'ok';
-//   ($(this).find('.item-text')).focus();
-//   // ($(this).find('.item-text')).contentEditable=true;
-//   // this.find('.item-text').contentEditable=true;
-// })
-
-document.getElementById('all-check').addEventListener('click', function() {
+$(document).on('click', '#all-check', function() {
   this.style.background = '#C4A3C4';
   var index, numComplete;
   numComplete = 0;
@@ -98,7 +96,14 @@ document.getElementById('all-check').addEventListener('click', function() {
 })
 
 document.getElementById('clear-check').addEventListener('click', function() {
-  console.log('clear completed');
+  for(i = itemList.length - 1; i > -1; i--) {
+    if(itemList[i].complete === true) {
+      document.querySelector('#item-' + itemList[i].id).remove();
+      itemList.splice(i, 1);
+    }
+  }
+  document.querySelector('.mark-all').textContent = 'Mark all as complete';
+  document.getElementById('all-check').style.background = 'none';
 })
 
 $(document).on('mouseleave', '.item', function() {
@@ -116,7 +121,7 @@ $(document).on('mouseleave', '.item', function() {
 var addItem = function(item) {
   var index, newObj;
   index = listIndex;
-  newObj = { id: index, text: item };
+  newObj = { id: index, text: item, complete: false };
   itemList.push(newObj);
   listIndex++;
   html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><br/>';
