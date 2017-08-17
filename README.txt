@@ -8,6 +8,14 @@ Done:
 -Mark all as completed
 -Update todo count
 -Filter All/Active/Completed
+-Fix deleting items when filtered for Active or Complete
+-Remove checked items from UI when checked from Active filter
+-Remove unchecked items from UI when unchecked from Completed filter
+-Fix mark all from Active filter
+-Fix unmark all from Active filter
+-Fix mark all from Completed filter
+-Fix unmark all from Completed filter
 
 To do:
+-Fix unmark/mark from Active/Completed after using mark/unmark
 -Edit todos

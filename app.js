@@ -37,10 +37,16 @@ $(document).on('click', DOMstrings.check, function() {
   if (this.innerHTML === '') {
     this.innerHTML = '<img src="check.png" />';
     itemList[arrIndex].complete = true;
+    if($('.filter-active').hasClass('selected')) {
+      document.querySelector('#item-' + index).remove();
+    }
   }
   else {
     this.innerHTML = '';
     itemList[arrIndex].complete = false;
+    if($('.filter-completed').hasClass('selected')) {
+      document.querySelector('#item-' + index).remove();
+    }
   }
 
   if(itemList.length > 0) {
@@ -75,7 +81,6 @@ $(document).on('click', DOMstrings.del, function() {
 
 
 $(document).on('mouseenter', '.item', function() {
-  // var parent = this.parentNode;
   ($(this).find('.item-remove')).css('visibility', 'visible');
   $(this).css('background', '#E1C8E1');
 })
@@ -88,31 +93,83 @@ $(document).on('mouseleave', '.item', function() {
 
 
 
+// MARK/UNMARK ALL
 
 $(document).on('click', '#all-check', function() {
-  this.style.background = '#C4A3C4';
-  var index, numComplete;
+  var index, numComplete, html;
   numComplete = 0;
-  for(i = 0; i < itemList.length; i++) {
-    if(itemList[i].complete === false) {
+  
+  if(!($('.mark-all').hasClass('unmark'))) {
+    // Change objects to complete:true
+    for(i = 0; i < itemList.length; i++) {
       itemList[i].complete = true;
-      index = itemList[i].id;
-      document.querySelector('#item-' + index).innerHTML = '<div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove" class="hidden">X</div><br/>';
     }
-    else {
-      numComplete++;
+
+    // Add checkbox and 'checked' style to UI
+    if($('.filter-all').hasClass('selected')) {
+      for(i = 0; i < itemList.length; i++) {
+        itemList[i].complete = true;
+        document.querySelector('#item-' + itemList[i].id).innerHTML = '<div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove" class="hidden">X</div><br/>';
+      }
     }
+
+    // If in Active filter, remove all from UI
+    if($('.filter-active').hasClass('selected')) {
+      document.querySelector('.main').innerHTML = '';
+    }
+
+    // If in Completed filter, add all to UI
+    if($('.filter-completed').hasClass('selected')) {
+      document.querySelector('.main').innerHTML = '';
+      for(i = 0; i < itemList.length; i++) {
+        html = '<div id="item-' + index + '"" class="item" data-element=' + itemList[i].id + '><div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove">X</div><br/>';
+        document.querySelector('.main').insertAdjacentHTML('beforeend', html);
+      }
+    }
+
+    // Set text to "Unmark all"
     document.querySelector('.mark-all').textContent = 'Unmark all as complete';
+    this.style.background = '#C4A3C4';
+
+    // Add class 'unmark' to '.mark-all'
+    $('.mark-all').addClass('unmark');
   }
-  if(numComplete === itemList.length) {
+
+  else {
+    // Change objects to complete:false
     for(i = 0; i < itemList.length; i++) {
       itemList[i].complete = false;
-      index = itemList[i].id;
-      document.querySelector('#item-' + index).innerHTML = '<div class="item-check"></div><div class="item-text">' + itemList[i].text + '</div><div class="item-remove" class="hidden">X</div><br/>';
     }
+
+    // Remove checkbox and 'checked' style from UI
+    if($('.filter-all').hasClass('selected')) {
+      for(i = 0; i < itemList.length; i++) {
+      document.querySelector('#item-' + itemList[i].id).innerHTML = '<div class="item-check"></div><div class="item-text">' + itemList[i].text + '</div><div class="item-remove" class="hidden">X</div><br/>';
+      }
+    }
+
+    // If in Active filter, add all to UI
+    if($('.filter-active').hasClass('selected')) {
+      document.querySelector('.main').innerHTML = '';
+      for(i = 0; i < itemList.length; i++) {
+        html = '<div id="item-' + index + '"" class="item" data-element=' + itemList[i].id + '><div class="item-check"></div><div class="item-text">' + itemList[i].text + '</div><div class="item-remove">X</div><br/>';
+        document.querySelector('.main').insertAdjacentHTML('beforeend', html);
+      }
+    }
+
+    // If in Completed filter, remove all from UI
+    if($('.filter-completed').hasClass('selected')) {
+      document.querySelector('.main').innerHTML = '';
+    }
+
+    // Set text to "Mark all"
     document.querySelector('.mark-all').textContent = 'Mark all as complete';
     this.style.background = 'none';
+
+    // Remove class 'unmark' from '.mark-all'
+    $('.mark-all').removeClass('unmark');
   }
+
   updateCount();
 })
 
