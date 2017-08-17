@@ -64,7 +64,7 @@ $(document).on('click', DOMstrings.del, function() {
   index = $(this).parent().attr('data-element');
   $('#item-' + index).remove();
   for(i = 0; i < itemList.length; i++) {
-    if(itemList[i].id = index) {
+    if(parseInt(itemList[i].id) === parseInt(index)) {
       itemList.splice(i, 1);
     }
   }
