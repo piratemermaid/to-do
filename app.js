@@ -2,7 +2,8 @@ var DOMstrings = {
   todoEntry: '.enter-todo', // Input
   todoCount: '.todo-count',
   check: '.item-check',
-  del: '.item-remove'
+  del: '.item-remove',
+  edit: '.item-edit'
 };
 
 var itemList = [ {id: 0, text: 'one', complete: false}, {id: 1, text:'two', complete: false}, {id: 2, text: 'three', complete: false}, {id: 3, text: 'four', complete: false}, {id: 4, text: 'five', complete: false}];
@@ -66,7 +67,7 @@ $(document).on('click', DOMstrings.check, function() {
 
 // Delete items
 $(document).on('click', DOMstrings.del, function() {
-  var parent, index;
+  var index;
   index = $(this).parent().attr('data-element');
   $('#item-' + index).remove();
   for(i = 0; i < itemList.length; i++) {
@@ -75,6 +76,29 @@ $(document).on('click', DOMstrings.del, function() {
     }
   }
   updateCount();
+})
+
+
+// Edit items
+$(document).on('click', DOMstrings.edit, function() {
+  var parent, index;
+  parent = this.parentNode;
+  index = $(parent).attr('data-element');
+  $(parent.querySelector('.item-text')).html('<input class="edit-todo">');
+  document.querySelector('.edit-todo').focus();
+  document.querySelector('.edit-todo').addEventListener('keypress', function(e) {
+    if (e.keyCode === 13 || e.which === 13) {
+    updateItem = document.querySelector('.edit-todo').value;
+    if(updateItem !== '') {
+      $(parent.querySelector('.item-text')).text(updateItem);
+      for(i = 0; i < itemList.length; i++) {
+        if(parseInt(itemList[i].id) === parseInt(index)) {
+          itemList[i].text = updateItem;
+        }
+      } 
+    }
+  }
+  })
 })
 
 
@@ -87,7 +111,6 @@ $(document).on('mouseenter', '.item', function() {
 })
 
 $(document).on('mouseleave', '.item', function() {
-  var parent = this.parentNode;
   ($(this).find('.item-remove')).css('visibility', 'hidden');
   ($(this).find('.item-edit')).css('visibility', 'hidden');
   $(this).css('background', 'none');
@@ -110,7 +133,7 @@ $(document).on('click', '#all-check', function() {
     if($('.filter-all').hasClass('selected')) {
       for(i = 0; i < itemList.length; i++) {
         itemList[i].complete = true;
-        document.querySelector('#item-' + itemList[i].id).innerHTML = '<div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove" class="hidden">X</div><br/>';
+        document.querySelector('#item-' + itemList[i].id).innerHTML = '<div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove" class="hidden">X</div><div class="item-edit"><img src="edit.png" /></div><br/>';
       }
     }
 
@@ -123,7 +146,7 @@ $(document).on('click', '#all-check', function() {
     if($('.filter-completed').hasClass('selected')) {
       document.querySelector('.main').innerHTML = '';
       for(i = 0; i < itemList.length; i++) {
-        html = '<div id="item-' + itemList[i].id + '"" class="item" data-element=' + itemList[i].id + '><div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove">X</div><br/>';
+        html = '<div id="item-' + itemList[i].id + '"" class="item" data-element=' + itemList[i].id + '><div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove">x</div><div class="item-edit"><img src="edit.png" /></div><br/>';
         document.querySelector('.main').insertAdjacentHTML('beforeend', html);
       }
     }
@@ -145,7 +168,7 @@ $(document).on('click', '#all-check', function() {
     // Remove checkbox and 'checked' style from UI
     if($('.filter-all').hasClass('selected')) {
       for(i = 0; i < itemList.length; i++) {
-      document.querySelector('#item-' + itemList[i].id).innerHTML = '<div class="item-check"></div><div class="item-text">' + itemList[i].text + '</div><div class="item-remove" class="hidden">X</div><br/>';
+      document.querySelector('#item-' + itemList[i].id).innerHTML = '<div class="item-check"></div><div class="item-text">' + itemList[i].text + '</div><div class="item-remove" class="hidden">x</div><div class="item-edit"><img src="edit.png" /></div><br/>';
       }
     }
 
@@ -153,7 +176,7 @@ $(document).on('click', '#all-check', function() {
     if($('.filter-active').hasClass('selected')) {
       document.querySelector('.main').innerHTML = '';
       for(i = 0; i < itemList.length; i++) {
-        html = '<div id="item-' + index + '"" class="item" data-element=' + itemList[i].id + '><div class="item-check"></div><div class="item-text">' + itemList[i].text + '</div><div class="item-remove">X</div><br/>';
+        html = '<div id="item-' + index + '"" class="item" data-element=' + itemList[i].id + '><div class="item-check"></div><div class="item-text">' + itemList[i].text + '</div><div class="item-remove">x</div><div class="item-edit"><img src="edit.png" /></div><br/>';
         document.querySelector('.main').insertAdjacentHTML('beforeend', html);
       }
     }
@@ -175,7 +198,7 @@ $(document).on('click', '#all-check', function() {
 })
 
 
-
+// Clear completed
 document.getElementById('clear-check').addEventListener('click', function() {
   for(i = itemList.length - 1; i > -1; i--) {
     if(itemList[i].complete === true) {
@@ -201,7 +224,7 @@ var addItem = function(item) {
   newObj = { id: index, text: item, complete: false };
   itemList.push(newObj);
   listIndex++;
-  html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><br/>';
+  html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><div class="item-edit"><img src="edit.png" /></div><br/>';
   document.querySelector('.main').insertAdjacentHTML('beforeend', html);
   document.querySelector(DOMstrings.todoEntry).value = '';
 }
@@ -301,10 +324,10 @@ displayCompleted = function() {
 
 displayItem = function(index, item, complete) {
   if(complete === false) {
-    html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><br/>';
+    html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"></div><div class="item-text">' + item + '</div><div class="item-remove">X</div><div class="item-edit"><img src="edit.png" /></div><br/>';
   }
   else {
-    html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + item + '</div><div class="item-remove">X</div><br/>';
+    html = '<div id="item-' + index + '"" class="item" data-element=' + index + '><div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + item + '</div><div class="item-remove">X</div><div class="item-edit"><img src="edit.png" /></div><br/>';
   }
   document.querySelector('.main').insertAdjacentHTML('beforeend', html);
 }
