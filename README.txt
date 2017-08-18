@@ -17,5 +17,3 @@ Done:
 -Fix mark all from Completed filter
 -Fix unmark all from Completed filter
 
-To do:
--Fix mark/unmark all option after individual marking/unmarking

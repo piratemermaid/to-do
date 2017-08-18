@@ -6,8 +6,8 @@ var DOMstrings = {
   edit: '.item-edit'
 };
 
-var itemList = [ {id: 0, text: 'one', complete: false}, {id: 1, text:'two', complete: false}, {id: 2, text: 'three', complete: false}, {id: 3, text: 'four', complete: false}, {id: 4, text: 'five', complete: false}];
-var listIndex = 5;
+var itemList = [];
+var listIndex = 0;
 
 
 // Add items
