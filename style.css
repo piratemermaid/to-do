@@ -66,13 +66,18 @@ h1 {
 .item-edit img {
   width: 15px;
   height: 15px;
-  padding-top: 4px;
+  padding-top: 6px;
   padding-right: 5px;
 }
 
 .edit-todo {
   background: none;
-  border-bottom: 1px solid black;
+  border: none;
+  border-bottom: 1px solid #946E94;
+  height: 25px;
+  font-family: 'Khula', sans-serif;
+  font-size: 20px;
+  color: #946E94;
 }
 
 .item-remove {
