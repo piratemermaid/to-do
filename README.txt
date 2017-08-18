@@ -17,5 +17,5 @@ Done:
 -Fix unmark all from Completed filter
 
 To do:
--Fix unmark/mark from Active/Completed after using mark/unmark
+-Fix mark/unmark all option after individual marking/unmarking
 -Edit todos

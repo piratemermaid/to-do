@@ -9,7 +9,7 @@ var itemList = [ {id: 0, text: 'one', complete: false}, {id: 1, text:'two', comp
 var listIndex = 5;
 
 
-// Add items
+
 document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', function(e) {
   var newItem;
 
@@ -23,7 +23,7 @@ document.querySelector(DOMstrings.todoEntry).addEventListener('keypress', functi
 })
 
 
-// Check/uncheck items
+
 $(document).on('click', DOMstrings.check, function() {
   var parent, index, arrIndex, numComplete;
   index = $(this).parent().attr('data-element');
@@ -64,7 +64,7 @@ $(document).on('click', DOMstrings.check, function() {
 })
 
 
-// Delete items
+
 $(document).on('click', DOMstrings.del, function() {
   var parent, index;
   index = $(this).parent().attr('data-element');
@@ -79,23 +79,22 @@ $(document).on('click', DOMstrings.del, function() {
 
 
 
-// Hover over an item
+
 $(document).on('mouseenter', '.item', function() {
   ($(this).find('.item-remove')).css('visibility', 'visible');
-  ($(this).find('.item-edit')).css('visibility', 'visible');
   $(this).css('background', '#E1C8E1');
 })
 
 $(document).on('mouseleave', '.item', function() {
   var parent = this.parentNode;
   ($(this).find('.item-remove')).css('visibility', 'hidden');
-  ($(this).find('.item-edit')).css('visibility', 'hidden');
   $(this).css('background', 'none');
 })
 
 
 
-// Mark/unmark all
+// MARK/UNMARK ALL
+
 $(document).on('click', '#all-check', function() {
   var index, numComplete, html;
   numComplete = 0;
@@ -123,7 +122,7 @@ $(document).on('click', '#all-check', function() {
     if($('.filter-completed').hasClass('selected')) {
       document.querySelector('.main').innerHTML = '';
       for(i = 0; i < itemList.length; i++) {
-        html = '<div id="item-' + itemList[i].id + '"" class="item" data-element=' + itemList[i].id + '><div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove">X</div><br/>';
+        html = '<div id="item-' + index + '"" class="item" data-element=' + itemList[i].id + '><div class="item-check"><img src="check.png" /></div><div class="item-text checked">' + itemList[i].text + '</div><div class="item-remove">X</div><br/>';
         document.querySelector('.main').insertAdjacentHTML('beforeend', html);
       }
     }
